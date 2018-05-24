@@ -12,13 +12,14 @@ class GameBoard extends Component {
     };
   }
 
-  highlightWinner(a, b, c)  {
+  changeSquareColor(a, b, c)  {
     const squares = $('.GameSquare');
     for(let i=0; i<3; i++) {
-      $($('.GameSquare')[arguments[i]]).css({
+      $(squares[arguments[i]]).css({
         backgroundColor: 'red'
       });
     }
+    $('.play-again').animate({opacity:1}, 750);
 
   }
 
@@ -37,7 +38,7 @@ class GameBoard extends Component {
     for(let i = 0; i < winningCombos.length; i++) {
       const [a, b, c] = winningCombos[i];
       if(squares[a] && squares[a] === squares[b] && squares[b] === squares[c]) {
-        this.highlightWinner(a, b, c);
+        this.changeSquareColor(a, b, c);
         return squares[a];
       }
     }
@@ -55,6 +56,21 @@ class GameBoard extends Component {
     }
   }
 
+  resetGame() {
+    const squares = Array(9).fill(null);
+    this.setState({
+      squares: squares,
+      nextMove: (this.state.nextMove == 'X' ? 'O' : 'X')
+    });
+
+    const squareBoxes = $('.GameSquare');
+    for(let i=0; i<9; i++) {
+      $(squareBoxes[i]).css({
+        backgroundColor: 'darkorange'
+      });
+    }
+    $('.play-again').animate({opacity:0}, 200);
+  }
 
 
   renderSquare(i) {
@@ -81,7 +97,7 @@ class GameBoard extends Component {
     return (
 
         <div className="GameBoard" >
-          <h1>tmf | tix-tac-toe</h1>
+          <h1>tmf | tic-tac-toe</h1>
           {this.renderSquare(0)}
           {this.renderSquare(1)}
           {this.renderSquare(2)}
@@ -94,6 +110,7 @@ class GameBoard extends Component {
           {this.renderSquare(7)}
           {this.renderSquare(8)}
 
+          <h3 className="play-again" onClick={this.resetGame.bind(this)}>play again →</h3>
         </div>
       );
     }

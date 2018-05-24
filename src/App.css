@@ -38,4 +38,11 @@
   border-radius: 15px;
   font-weight: 500;
   color: black;
+  cursor: pointer;
+}
+
+.play-again {
+  font-size: 32pt;
+  opacity:0;
+  cursor: pointer;
 }
