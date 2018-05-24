@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import GameSquare from './GameSquare';
+import $ from 'jquery';
 
 class GameBoard extends Component {
 
@@ -9,6 +10,16 @@ class GameBoard extends Component {
       squares: Array(9).fill(null),
       nextMove: 'X'
     };
+  }
+
+  highlightWinner(a, b, c)  {
+    const squares = $('.GameSquare');
+    for(let i=0; i<3; i++) {
+      $($('.GameSquare')[arguments[i]]).css({
+        backgroundColor: 'red'
+      });
+    }
+
   }
 
   thereIsAWinner(squares) {
@@ -26,6 +37,7 @@ class GameBoard extends Component {
     for(let i = 0; i < winningCombos.length; i++) {
       const [a, b, c] = winningCombos[i];
       if(squares[a] && squares[a] === squares[b] && squares[b] === squares[c]) {
+        this.highlightWinner(a, b, c);
         return squares[a];
       }
     }
@@ -33,12 +45,14 @@ class GameBoard extends Component {
   }
 
   handleClick(i) {
-    const squares = this.state.squares.slice();
-    squares[i] = this.state.nextMove;
-    this.setState({
-      squares: squares,
-      nextMove: (this.state.nextMove == 'X' ? 'O' : 'X')
-    });
+    if(this.state.squares[i] == null) {
+      const squares = this.state.squares.slice();
+      squares[i] = this.state.nextMove;
+      this.setState({
+        squares: squares,
+        nextMove: (this.state.nextMove == 'X' ? 'O' : 'X')
+      });
+    }
   }
 
 

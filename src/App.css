@@ -28,7 +28,7 @@
 }
 
 .GameSquare {
-  background: darkorange;
+  background-color: darkorange;
   height: 150px;
   width: 150px;
   line-height: 150px;
