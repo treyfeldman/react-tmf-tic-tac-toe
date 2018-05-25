@@ -46,21 +46,33 @@ class GameBoard extends Component {
   }
 
   handleClick(i) {
+    if(this.thereIsAWinner(this.state.squares)) {
+      return;
+    }
     if(this.state.squares[i] == null) {
       const squares = this.state.squares.slice();
       squares[i] = this.state.nextMove;
       this.setState({
         squares: squares,
-        nextMove: (this.state.nextMove == 'X' ? 'O' : 'X')
+        nextMove: (this.state.nextMove === 'X' ? 'O' : 'X')
+      }, function() {
+        if(this.boardIsFull()) {
+          setTimeout(this.resetGame.bind(this), 1500)
+        }
       });
     }
   }
 
+  boardIsFull() {
+    return this.state.squares.indexOf(null) === -1;
+  }
+
   resetGame() {
+    $('.play-again').css('opacity', 0);
     const squares = Array(9).fill(null);
     this.setState({
       squares: squares,
-      nextMove: (this.state.nextMove == 'X' ? 'O' : 'X')
+      nextMove: (this.state.nextMove === 'X' ? 'O' : 'X')
     });
 
     const squareBoxes = $('.GameSquare');
@@ -69,7 +81,6 @@ class GameBoard extends Component {
         backgroundColor: 'darkorange'
       });
     }
-    $('.play-again').animate({opacity:0}, 200);
   }
 
 
@@ -92,7 +103,6 @@ class GameBoard extends Component {
     else {
       status = 'Next player: ' + (this.state.nextMove);
     }
-    console.log(status);
 
     return (
 
